@@ -1,4 +1,3 @@
-
 // ===============================
 // Form handling for resources page
 // ===============================
@@ -21,20 +20,21 @@ function getSelectedPriceUnit() {
 
 function isResourceNameValid(value) {
   const trimmed = value.trim();
-  const allowedPattern = /^[A-Za-z0-9 ]+$/;
-  return trimmed.length >= 5 && trimmed.length <=30 && allowedPattern.text(trimmed);
+  const allowedPattern = /^[A-Za-z0-9äöåÄÖÅ ]+$/;
+  return trimmed.length >= 5 && trimmed.length <= 30 && allowedPattern.test(trimmed);
 }
 
-function isResourceDescriptionValid(value){
+function isResourceDescriptionValid(value) {
   const trimmed = value.trim();
-  const allowedPattern = /^[A-Za-z0-9 ]+$/;
-  return trimmed.length >= 10 && trimmed.length <= 50 && allowedPattern.text(trimmed);
+  const allowedPattern = /^[A-Za-z0-9äöåÄÖÅ ]+$/;
+  return trimmed.length >= 10 && trimmed.length <= 50 && allowedPattern.test(trimmed);
 }
+
 // -------------- Form wiring --------------
 document.addEventListener("DOMContentLoaded", () => {
   const form = $("resourceForm");
   if (!form) {
-    console.warn("resourceForm not found. Ensure the form has id=\"resourceForm\".");
+    console.warn('resourceForm not found. Ensure the form has id="resourceForm".');
     return;
   }
 
@@ -43,8 +43,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function onSubmit(event) {
   event.preventDefault();
+
   const submitter = event.submitter;
   const actionValue = submitter && submitter.value ? submitter.value : "create";
+
   const resourceName = $("resourceName")?.value.trim() ?? "";
   const resourceDescription = $("resourceDescription")?.value.trim() ?? "";
   const resourceAvailable = $("resourceAvailable")?.checked ?? false;
@@ -53,11 +55,12 @@ async function onSubmit(event) {
 
   const nameValid = isResourceNameValid(resourceName);
   const descriptionValid = isResourceDescriptionValid(resourceDescription);
- 
+
   if (!nameValid || !descriptionValid) {
-	console.warn("Invalid input. Request was not sent.");
-	return;
-}
+    console.warn("Invalid input. Request was not sent.");
+    return;
+  }
+
   const payload = {
     action: actionValue,
     resourceName,
